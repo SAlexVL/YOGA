@@ -1,4 +1,3 @@
-// берем главную кнопку
 window.addEventListener('DOMContentLoaded', function() {
  
   'use strict';
