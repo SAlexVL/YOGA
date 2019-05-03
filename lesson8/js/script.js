@@ -39,11 +39,22 @@ window.addEventListener('DOMContentLoaded', function() {
   let deadline = '2019-05-04';
 
   function getTimeRemaining(endtime) {
-    let t = Date.parse(endtime) - Date.parse(new Date()),
-        seconds = Math.floor((t/1000) % 60),
-        minutes = Math.floor((t/1000/60) % 60),
-        hours = Math.floor((t/(1000*60*60)));
+    let t = Date.parse(endtime) - Date.parse(new Date());
 
+    let seconds = Math.floor((t/1000) % 60);
+    if (seconds.toString().length <= 1) {
+      seconds = '0' + seconds;
+    }
+    
+    let minutes = Math.floor((t/1000/60) % 60);
+    if (minutes.toString().length <= 1) {
+      minutes = '0' + minutes;
+    }
+
+    let hours = Math.floor((t/(1000*60*60)));
+    if (hours.toString().length <= 1) {
+      hours = '0' + hours;
+    }
         return {
           'total' : t,
           'hours' : hours,
