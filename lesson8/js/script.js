@@ -36,31 +36,45 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 
   //timer
-  let deadline = '2019-05-04';
+  let deadline = '2019-05-05';
 
   function getTimeRemaining(endtime) {
     let t = Date.parse(endtime) - Date.parse(new Date());
 
-    let seconds = Math.floor((t/1000) % 60);
-    if (seconds.toString().length <= 1) {
-      seconds = '0' + seconds;
-    }
-    
-    let minutes = Math.floor((t/1000/60) % 60);
-    if (minutes.toString().length <= 1) {
-      minutes = '0' + minutes;
-    }
+    if (t > 0) {
+  //функция для добавления 0 в одиночные цифры
+      function zeroAdd(a) {
+        if (a.toString().length <= 1) {
+          a = '0' + a;
+        }
+        return a;
+      }
 
-    let hours = Math.floor((t/(1000*60*60)));
-    if (hours.toString().length <= 1) {
-      hours = '0' + hours;
-    }
+      let seconds = Math.floor((t/1000) % 60);
+      seconds = zeroAdd(seconds);
+      
+      let minutes = Math.floor((t/1000/60) % 60);
+      minutes = zeroAdd(minutes);
+  
+      let hours = Math.floor((t/(1000*60*60)));
+      hours = zeroAdd(hours);
         return {
           'total' : t,
           'hours' : hours,
           'minutes' : minutes,
           'seconds' : seconds
+          };
+    } else {
+
+        return {
+          'total' : t,
+          'hours' : '00',
+          'minutes' : '00',
+          'seconds' : '00'
         };
+
+      }
+
   }
 
   function setClock(id, endtime) {
