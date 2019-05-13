@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  info.addEventListener('click', function(event) {
+  info.addEventListener('click', (event) => {
     let target = event.target;
     if (target && target.classList.contains('info-header-tab')) {
         for (let i = 0; i < tab.length; i++) {
@@ -36,45 +36,46 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 
   //timer
-  let deadline = '2019-05-05';
+  let deadline = '2019-05-14';
+  // изменена и эта функция на стрелочную
+  let getTimeR = (endtime) => {
+    let t = Date.parse(endtime) - Date.parse(new Date()),
+    zero = 0;
 
-  function getTimeRemaining(endtime) {
-    let t = Date.parse(endtime) - Date.parse(new Date());
-
-    if (t > 0) {
-  //функция для добавления 0 в одиночные цифры
-      function zeroAdd(a) {
+    if (`${t}` > `${zero}`) {
+    //функция для добавления 0 в одиночные цифры
+      // стрелочная 
+      let zeroStr = (a) => {
         if (a.toString().length <= 1) {
-          a = '0' + a;
+          a = `${zero}${a}`;
         }
-        return a;
-      }
+        return a;        
+      };
 
       let seconds = Math.floor((t/1000) % 60);
-      seconds = zeroAdd(seconds);
+      seconds = zeroStr(seconds);
       
       let minutes = Math.floor((t/1000/60) % 60);
-      minutes = zeroAdd(minutes);
-  
+      minutes = zeroStr(minutes);
+
       let hours = Math.floor((t/(1000*60*60)));
-      hours = zeroAdd(hours);
+      hours = zeroStr(hours);
+
         return {
-          'total' : t,
-          'hours' : hours,
-          'minutes' : minutes,
-          'seconds' : seconds
+          'total' : `${t}`,
+          'hours' : `${hours}`,
+          'minutes' : `${minutes}`,
+          'seconds' : `${seconds}`
           };
     } else {
 
         return {
-          'total' : t,
+          'total' : `${t}`,
           'hours' : '00',
           'minutes' : '00',
           'seconds' : '00'
         };
-
-      }
-
+      }   
   }
 
   function setClock(id, endtime) {
@@ -85,7 +86,7 @@ window.addEventListener('DOMContentLoaded', function() {
         timeInterval = setInterval(updateClock, 1000);
 
         function updateClock() {
-          let t = getTimeRemaining(endtime);
+          let t = getTimeR(endtime);
           hours.textContent = t.hours;
           minutes.textContent = t.minutes;
           seconds.textContent = t.seconds;
@@ -96,6 +97,32 @@ window.addEventListener('DOMContentLoaded', function() {
         }
   }
 
-  setClock('timer', deadline);
+  setClock('timer', `${deadline}`);
+
+    //Modal window
+    let more = document.querySelector('.more'), 
+    overlay = document.querySelector('.overlay'),
+    close = document.querySelector('.popup-close'),
+    tabs = document.querySelectorAll('.description-btn');
+
+    function windowShow(arg1) {
+      arg1.addEventListener('click', () => {
+        overlay.style.display = 'block';
+        this.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+    //Узнать больше под таймером
+    windowShow(more);
+    //Узнать подробнее в табах
+    for (let i = 0; i < tabs.length; i++) {
+      windowShow(tabs[i]);
+      }    
+    //закрыть мод.окно
+    close.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      more.classList.remove('more-splash');
+      document.body.style.overflow = '';
+  });
 
 });

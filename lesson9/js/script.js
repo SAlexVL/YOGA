@@ -124,4 +124,14 @@ window.addEventListener('DOMContentLoaded', function() {
       document.body.style.overflow = '';
   });
 
+  let toTop;
+  function up() {
+    let top = Math.max(document.body.scrollTop,document.documentElement.scrollTop);
+   if(top > 0) {
+    window.scrollBy(0,((top+100)/-10));
+    toTop = setTimeout('up()',20);
+   } else clearTimeout(toTop);
+   return false;
+  }
+
 });
