@@ -104,19 +104,22 @@ window.addEventListener('DOMContentLoaded', function() {
       close = document.querySelector('.popup-close'),
       tabs = document.querySelectorAll('.description-btn');
 
-  function windowShow(arg1) {
-    arg1.addEventListener('click', function() {
-      overlay.style.display = 'block';
-      this.classList.add('more-splash');
-      document.body.style.overflow = 'hidden';
-    });
-  }
-  //Узнать больше под таймером
-  windowShow(more);
-  //Узнать подробнее в табах
-  for (let i = 0; i < tabs.length; i++) {
-    windowShow(tabs[i]);
-    }    
+      function windowShow() {
+        overlay.style.display = 'block';
+        this.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+      }
+  
+      //Узнать больше под таймером
+      more.addEventListener('click', () => {
+        windowShow();
+      });
+      //Узнать подробнее в табах
+      for (let i = 0; i < tabs.length; i++) {
+          tabs[i].addEventListener('click', () => {
+            windowShow();
+          });
+        }     
   //закрыть мод.окно
   close.addEventListener('click', function() {
       overlay.style.display = 'none';
