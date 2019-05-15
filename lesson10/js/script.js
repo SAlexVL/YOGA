@@ -6,20 +6,19 @@ window.addEventListener('DOMContentLoaded', function() {
       info = document.querySelector('.info-header'),
       tabContent = document.querySelectorAll('.info-tabcontent');
 
-  function hideTabContent(a) {
+  let hideTabC = (a) => {
     for (let i = a; i < tabContent.length; i++) {
       tabContent[i].classList.remove('show');
       tabContent[i].classList.add('hide');
-    }
-  }    
+    }   
+  }
+  hideTabC(1);
 
-  hideTabContent(1);
-
-  function showTabContent(b) {
+  let showTabC = (b) => {
     if (tabContent[b].classList.contains('hide')) {
-        tabContent[b].classList.remove('hide');
-        tabContent[b].classList.add('show');
-    }
+      tabContent[b].classList.remove('hide');
+      tabContent[b].classList.add('show');
+    }   
   }
 
   info.addEventListener('click', (event) => {
@@ -27,8 +26,8 @@ window.addEventListener('DOMContentLoaded', function() {
     if (target && target.classList.contains('info-header-tab')) {
         for (let i = 0; i < tab.length; i++) {
           if (target == tab[i]) {
-            hideTabContent(0);
-            showTabContent(i);
+            hideTabC(0);
+            showTabC(i);
             break;
           }
         }
@@ -36,7 +35,7 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 
   //timer
-  let deadline = '2019-05-14';
+  let deadline = '2019-05-16';
   // изменена и эта функция на стрелочную
   let getTimeR = (endtime) => {
     let t = Date.parse(endtime) - Date.parse(new Date()),
@@ -78,14 +77,13 @@ window.addEventListener('DOMContentLoaded', function() {
       }   
   }
 
-  function setClock(id, endtime) {
+  let setClockF = (id, endtime) => {
     let timer = document.getElementById(id),
         hours = timer.querySelector('.hours'),
         minutes = timer.querySelector('.minutes'),
-        seconds = timer.querySelector('.seconds'),
-        timeInterval = setInterval(updateClock, 1000);
+        seconds = timer.querySelector('.seconds');       
 
-        function updateClock() {
+        let updateClockF = () => {
           let t = getTimeR(endtime);
           hours.textContent = t.hours;
           minutes.textContent = t.minutes;
@@ -93,11 +91,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
           if (t.total <= 0) {
             clearInterval(timeInterval);
-          }
+          }          
         }
+
+        let timeInterval = setInterval(updateClockF, 1000);    
   }
 
-  setClock('timer', `${deadline}`);
+  setClockF('timer', `${deadline}`);
 
     //Modal window
     let more = document.querySelector('.more'), 
