@@ -104,18 +104,21 @@ window.addEventListener('DOMContentLoaded', function() {
     close = document.querySelector('.popup-close'),
     tabs = document.querySelectorAll('.description-btn');
 
-    function windowShow(arg1) {
-      arg1.addEventListener('click', () => {
-        overlay.style.display = 'block';
-        this.classList.add('more-splash');
-        document.body.style.overflow = 'hidden';
-      });
+    let windowShow = () => {
+      overlay.style.display = 'block';
+      overlay.classList.add('more-splash');
+      document.body.style.overflow = 'hidden';
     }
+
     //Узнать больше под таймером
-    windowShow(more);
+    more.addEventListener('click', () => {
+      windowShow();
+    });
     //Узнать подробнее в табах
     for (let i = 0; i < tabs.length; i++) {
-      windowShow(tabs[i]);
+        tabs[i].addEventListener('click', () => {
+          windowShow();
+        });
       }    
     //закрыть мод.окно
     close.addEventListener('click', () => {
@@ -125,39 +128,69 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 
   // Form
-
+  // объект выводимых сообщений
   let message = {
     loading: 'Загрузка',
     success: 'Спасибо! Скоро мы с Вами свяжемся!',
     failure: 'Что-то пошло не так...'
-  };
-
-  let form = document.querySelector('.main-form'),
+  },    // остальные переменные
+      form = document.querySelector('.main-form'),
       input = form.getElementsByTagName('input'),
-      statusMessage = document.createElement('div');
+      statusMessage = document.createElement('div'),
+      formContact = document.querySelector('#form'),
+      inputContact = formContact.getElementsByTagName('input'),
+      argum = [form, formContact];
 
       statusMessage.classList.add('status');
 
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    form.appendChild(statusMessage);
+  // обработка submit 
+  for (let j = 0; j < argum.length; j++) {
 
-    let request = new XMLHttpRequest();
-    request.open('POST', 'server.php');
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    let formData = new FormData(form);
-    request.send(formData);
-
-    request.addEventListener('readystatechange', function() {
-        if (request.readyState < 4) {
-          statusMessage.innerHTML = message.loading;
-        } else if (request.readyState === 4 && request.status == 200) {
-          statusMessage.innerHTML = message.success;
+    argum[j].addEventListener('submit', (event) => {
+      event.preventDefault();
+      argum[j].appendChild(statusMessage);
+  
+      let request = new XMLHttpRequest();
+      request.open('POST', 'server.php');
+      request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  
+      let formData = new FormData(argum[j]);
+  
+      let obj = {};
+      formData.forEach(function(value, key) {
+        obj[key] = value;
+      });
+      let json = JSON.stringify(obj);
+      // валидация номера телефона
+      let phoneNumber = (param) => {
+        let phonnumb = /^[\+]\d{1}\s[\(]\d{3}[\)]\s\d{3}[\s]\d{2}[\s]\d{2}$/;
+    
+        if (param[j].value.match(phonnumb)) {
+              return request.send(json);
         } else {
-          statusMessage.innerHTML = message.failure;
-        }
+              return alert("Введите номер телефона правильно! Он должен выглядеть так: +7 (XXX) XXX XX XX");
+          }
+
+      }
+      phoneNumber(argum[j]);
+      // текст в классе
+      request.addEventListener('readystatechange', function() {
+          if (request.readyState < 4) {
+            statusMessage.innerHTML = message.loading;
+          } else if (request.readyState === 4 && request.status == 200) {
+            statusMessage.innerHTML = message.success;
+          } else {
+            statusMessage.innerHTML = message.failure;
+          }
+      });
+          // обнуление input'ов
+          for (let i = 0; i < input.length; i++) {
+            input[i].value = '';
+          }
+          for (let j = 0; j < inputContact.length; j++) {
+            inputContact[j].value = '';
+          }  
     });
-  });
+  }
 
 });

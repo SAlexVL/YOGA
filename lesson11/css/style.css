@@ -563,6 +563,10 @@ header ul li:before {
   color: #c78030;
   cursor: pointer;
 }
+.content .contact-form form .status {
+    color: #fff;
+}
+
 .content .contact-form form button:hover {
   box-shadow: 0 0 10px #c78030;
 }
