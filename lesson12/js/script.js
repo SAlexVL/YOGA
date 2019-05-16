@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded', function() {
       tabContent[b].classList.remove('hide');
       tabContent[b].classList.add('show');
     }   
-  }
+  };
 
   info.addEventListener('click', (event) => {
     let target = event.target;
@@ -75,7 +75,7 @@ window.addEventListener('DOMContentLoaded', function() {
           'seconds' : '00'
         };
       }   
-  }
+  };
 
   let setClockF = (id, endtime) => {
     let timer = document.getElementById(id),
@@ -92,10 +92,10 @@ window.addEventListener('DOMContentLoaded', function() {
           if (t.total <= 0) {
             clearInterval(timeInterval);
           }          
-        }
+        };
 
         let timeInterval = setInterval(updateClockF, 1000);    
-  }
+  };
   setClockF('timer', `${deadline}`);
 
     //Modal window
@@ -108,7 +108,7 @@ window.addEventListener('DOMContentLoaded', function() {
       overlay.style.display = 'block';
       overlay.classList.add('more-splash');
       document.body.style.overflow = 'hidden';
-    }
+    };
 
     //Узнать больше под таймером
     more.addEventListener('click', () => {
@@ -175,7 +175,7 @@ window.addEventListener('DOMContentLoaded', function() {
                       return alert("Введите номер телефона правильно! Он должен выглядеть так: +7 (XXX) XXX XX XX");
                     }
     
-                  }
+                  };
             phoneNumber(elemC);
 
             // текст в классе
@@ -189,7 +189,7 @@ window.addEventListener('DOMContentLoaded', function() {
               }
             });
 
-          })
+          });
         } 
     
             // обнуление input'ов
@@ -197,7 +197,7 @@ window.addEventListener('DOMContentLoaded', function() {
               for (let i = 0; i < elemC.length; i++) {
                 elemC[i].value = '';
               }
-            }
+            };
 
             postData(formData)
               .then(() => statusMessage.innerHTML = message.loading)
@@ -207,7 +207,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
        }); //sumbit
 
-  }//sendForm
+  };//sendForm
   for (let k = 0; k < argum.length; k++) {
     sendForm(argum[k], argumC[k]);
   }  
