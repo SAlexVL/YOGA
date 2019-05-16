@@ -181,11 +181,11 @@ window.addEventListener('DOMContentLoaded', function() {
             // текст в классе
             request.addEventListener('readystatechange', () => {
               if (request.readyState < 4) {
-               resolve() // statusMessage.innerHTML = message.loading;
+               resolve(); // statusMessage.innerHTML = message.loading;
               } else if (request.readyState === 4 && request.status == 200) {
-                resolve()// statusMessage.innerHTML = message.success;
+                resolve();// statusMessage.innerHTML = message.success;
               } else {
-                reject()// statusMessage.innerHTML = message.failure;
+                reject();// statusMessage.innerHTML = message.failure;
               }
             });
 
