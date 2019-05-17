@@ -329,7 +329,7 @@ window.addEventListener('DOMContentLoaded', function() {
         } else {
           // let  a = total;
           koef = this.options[this.selectedIndex].value;
-          totalValue.innerHTML = koef*total;
+          totalValue.innerHTML = koef*daysSum*personsSum*4000;
         }
       });
 
