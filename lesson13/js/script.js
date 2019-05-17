@@ -270,13 +270,12 @@ window.addEventListener('DOMContentLoaded', function() {
       personsSum = 0,
       daysSum = 0,
       total = 0,
+      koef = place.options[place.selectedIndex].value,
       mistake = [/^\d{1}$/ , /^\d{2}$/, /^\d{3}$/];
 
       totalValue.innerHTML = 0;
 
       persons.addEventListener('input', function() {
-
-        let koef = place.options[place.selectedIndex].value;
 
         if (mistake[0].test(this.value) || mistake[1].test(this.value) || mistake[2].test(this.value)) {          
           this.value = this.value;
@@ -289,7 +288,7 @@ window.addEventListener('DOMContentLoaded', function() {
         if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
           total = 0;
         } else {
-          total = koef*daysSum*personsSum*4000;
+          total = daysSum*personsSum*4000;
         }        
 
         if (restDays.value == '') {
@@ -302,8 +301,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
       restDays.addEventListener('input', function() {
 
-        let koef = place.options[place.selectedIndex].value;
-
         if (mistake[0].test(this.value) || mistake[1].test(this.value)) {          
           this.value = this.value;
         } else {
@@ -315,7 +312,7 @@ window.addEventListener('DOMContentLoaded', function() {
           if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
             total = 0;
           } else {
-            total = koef*daysSum*personsSum*4000;
+            total = daysSum*personsSum*4000;
           }  
 
         if (persons.value == '') {
@@ -330,9 +327,9 @@ window.addEventListener('DOMContentLoaded', function() {
         if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
           totalValue.innerHTML = 0;
         } else {
-          let  a = total;
-          // totalValue.innerHTML = a * this.options[this.selectedIndex].value;
-          totalValue.innerHTML = a;
+          // let  a = total;
+          koef = this.options[this.selectedIndex].value;
+          totalValue.innerHTML = koef*total;
         }
       });
 
