@@ -288,7 +288,7 @@ window.addEventListener('DOMContentLoaded', function() {
         if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
           total = 0;
         } else {
-          total = daysSum*personsSum*4000;
+          total = koef*daysSum*personsSum*4000;
         }        
 
         if (restDays.value == '') {
@@ -312,7 +312,7 @@ window.addEventListener('DOMContentLoaded', function() {
           if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
             total = 0;
           } else {
-            total = daysSum*personsSum*4000;
+            total = koef*daysSum*personsSum*4000;
           }  
 
         if (persons.value == '') {
