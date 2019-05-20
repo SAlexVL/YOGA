@@ -127,14 +127,23 @@ window.addEventListener('DOMContentLoaded', function() {
       document.body.style.overflow = '';
   });
 
-  let toTop;
-  function up() {
-    let top = Math.max(document.body.scrollTop,document.documentElement.scrollTop);
-   if(top > 0) {
-    window.scrollBy(0,((top+100)/-10));
-    toTop = setTimeout('up()',20);
-   } else clearTimeout(toTop);
-   return false;
+// прокрутка по пунктам меню
+function myScroll () {
+  const anchors = document.querySelectorAll('.container-menu')
+
+  for (let anchor of anchors) {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault()
+      
+      const blockID = anchor.getAttribute('href')
+      
+      document.querySelector('' + blockID).scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    })
   }
+}
+myScroll();
 
 });
