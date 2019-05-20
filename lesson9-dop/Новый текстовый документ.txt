@@ -1,0 +1,24 @@
+  function opr () {
+    var sBrowser, sUsrAg = navigator.userAgent;
+
+    //The order matters here, and this may report false positives for unlisted browsers.
+    
+    if (sUsrAg.indexOf("Firefox") > -1) {
+         sBrowser = "js";
+    } else if (sUsrAg.indexOf("Opera") > -1) {
+         sBrowser = "js";
+    } else if (sUsrAg.indexOf("Trident") > -1) {
+         sBrowser = "css";
+    } else if (sUsrAg.indexOf("Edge") > -1) {
+         sBrowser = "css";
+    } else if (sUsrAg.indexOf("Chrome") > -1) {
+        sBrowser = "js";
+    } else if (sUsrAg.indexOf("Safari") > -1) {
+        sBrowser = "js";
+    } else {
+        sBrowser = "unknown";
+    }
+    
+    alert("Анимация на: " + sBrowser);
+  }
+  opr();

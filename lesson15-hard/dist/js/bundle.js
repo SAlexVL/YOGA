@@ -1569,61 +1569,22 @@ function calc() {
       totalValue = document.getElementById('total'),
       personsSum = 0,
       daysSum = 0,
-      total = 0,
-      koef = place.options[place.selectedIndex].value,
-      mistake = [/^\d{1}$/, /^\d{2}$/, /^\d{3}$/];
-  totalValue.innerHTML = 0; // количество людей
-
-  persons.addEventListener('input', function () {
-    if (mistake[0].test(this.value) || mistake[1].test(this.value) || mistake[2].test(this.value)) {
-      this.value = this.value;
-    } else {
-      this.value = this.value.slice(0, -1);
-    }
-
-    personsSum = +this.value;
-
-    if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
       total = 0;
-    } else {
-      total = koef * daysSum * personsSum * 4000;
+  document.body.addEventListener('input', function (e) {
+    var target = e.target;
+
+    if (target.classList == 'counter-block-input') {
+      target.value = target.value.replace(/(^[0]{1})/, "");
     }
 
-    if (restDays.value == '') {
+    personsSum = +persons.value;
+    daysSum = +restDays.value;
+    total = personsSum * daysSum * 4000;
+
+    if (personsSum == "" || daysSum == "") {
       totalValue.innerHTML = 0;
     } else {
-      totalValue.innerHTML = total;
-    }
-  }); // количество дней
-
-  restDays.addEventListener('input', function () {
-    if (mistake[0].test(this.value) || mistake[1].test(this.value)) {
-      this.value = this.value;
-    } else {
-      this.value = this.value.slice(0, -1);
-    }
-
-    daysSum = +this.value;
-
-    if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
-      total = 0;
-    } else {
-      total = koef * daysSum * personsSum * 4000;
-    }
-
-    if (persons.value == '') {
-      totalValue.innerHTML = 0;
-    } else {
-      totalValue.innerHTML = total;
-    }
-  }); // переключение мест
-
-  place.addEventListener('change', function () {
-    if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
-      totalValue.innerHTML = 0;
-    } else {
-      koef = this.options[this.selectedIndex].value;
-      totalValue.innerHTML = koef * daysSum * personsSum * 4000;
+      totalValue.innerHTML = total * place.options[place.selectedIndex].value;
     }
   });
 }
@@ -1735,33 +1696,90 @@ module.exports = form;
 /***/ (function(module, exports) {
 
 function modal() {
-  var more = document.querySelector('.more'),
-      overlay = document.querySelector('.overlay'),
-      close = document.querySelector('.popup-close'),
-      tabs = document.querySelectorAll('.description-btn');
+  var overlay = document.querySelector('.overlay'),
+      isActiveBtn;
 
-  var windowShow = function windowShow() {
-    overlay.style.display = 'block';
-    overlay.classList.add('more-splash');
-    document.body.style.overflow = 'hidden';
-  }; //Узнать больше под таймером
+  var bindModal = function bindModal(overlayStatus, overflowStatus, classListMethod, el) {
+    if (classListMethod == 'add') {
+      isActiveBtn = el;
+    }
 
+    if (!el) {
+      el = isActiveBtn;
+    }
 
-  more.addEventListener('click', windowShow); //Узнать подробнее в табах
+    overlay.style.display = overlayStatus;
+    el.classList[classListMethod]('more-splash');
+    document.body.style.overflow = overflowStatus;
+  };
 
-  for (var i = 0; i < tabs.length; i++) {
-    tabs[i].addEventListener('click', windowShow);
-  } //закрыть мод.окно
+  document.body.addEventListener('click', function (e) {
+    var target = e.target;
 
+    if (target.classList.contains('more') || target.classList.contains('description-btn')) {
+      bindModal('block', 'hidden', 'add', target);
+    }
 
-  close.addEventListener('click', function () {
-    overlay.style.display = 'none';
-    more.classList.remove('more-splash');
-    document.body.style.overflow = '';
+    if (target.classList.contains('popup-close')) {
+      bindModal('none', '', 'remove');
+    }
   });
 }
 
 module.exports = modal;
+
+/***/ }),
+
+/***/ "./src/js/parts/scroll.js":
+/*!********************************!*\
+  !*** ./src/js/parts/scroll.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function scroll() {
+  var myScroll = function myScroll() {
+    var anchors = document.querySelectorAll('.container-menu');
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      var _loop = function _loop() {
+        var anchor = _step.value;
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          var blockID = anchor.getAttribute('href');
+          document.querySelector('' + blockID).scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        });
+      };
+
+      for (var _iterator = anchors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        _loop();
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  };
+
+  myScroll();
+}
+
+module.exports = scroll;
 
 /***/ }),
 
@@ -1965,6 +1983,7 @@ window.addEventListener('DOMContentLoaded', function () {
   var calc = __webpack_require__(/*! ./parts/calc.js */ "./src/js/parts/calc.js"),
       form = __webpack_require__(/*! ./parts/form.js */ "./src/js/parts/form.js"),
       slider = __webpack_require__(/*! ./parts/slider.js */ "./src/js/parts/slider.js"),
+      scroll = __webpack_require__(/*! ./parts/scroll.js */ "./src/js/parts/scroll.js"),
       tabs = __webpack_require__(/*! ./parts/tabs.js */ "./src/js/parts/tabs.js"),
       timer = __webpack_require__(/*! ./parts/timer.js */ "./src/js/parts/timer.js"),
       modal = __webpack_require__(/*! ./parts/modal.js */ "./src/js/parts/modal.js");
@@ -1972,6 +1991,7 @@ window.addEventListener('DOMContentLoaded', function () {
   calc();
   form();
   slider();
+  scroll();
   tabs();
   timer();
   modal();

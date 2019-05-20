@@ -99,33 +99,47 @@ window.addEventListener('DOMContentLoaded', function() {
   setClockF('timer', `${deadline}`);
 
     //Modal window
-    let more = document.querySelector('.more'), 
-    overlay = document.querySelector('.overlay'),
-    close = document.querySelector('.popup-close'),
-    tabs = document.querySelectorAll('.description-btn');
+    let overlay = document.querySelector('.overlay'),
+    isActiveBtn;
 
-    let windowShow = () => {
-      overlay.style.display = 'block';
-      overlay.classList.add('more-splash');
-      document.body.style.overflow = 'hidden';
+    let bindModal = (overlayStatus, overflowStatus, classListMethod, el) => {
+      if(classListMethod == 'add') {isActiveBtn = el;}
+      if(!el) {el = isActiveBtn;}
+      overlay.style.display = overlayStatus;
+      el.classList[classListMethod]('more-splash');
+      document.body.style.overflow = overflowStatus;
     };
 
-    //Узнать больше под таймером
-    more.addEventListener('click', () => {
-      windowShow();
+    document.body.addEventListener('click', (e) => {
+      let target = e.target;
+
+      if (target.classList.contains('more') || target.classList.contains('description-btn')) {
+        bindModal('block', 'hidden', 'add', target);
+      }
+
+      if (target.classList.contains('popup-close')) {
+        bindModal('none', '', 'remove');
+      }
     });
-    //Узнать подробнее в табах
-    for (let i = 0; i < tabs.length; i++) {
-        tabs[i].addEventListener('click', () => {
-          windowShow();
+
+  // прокрутка по пунктам меню
+  let myScroll = () => {
+    const anchors = document.querySelectorAll('.container-menu');
+
+    for (let anchor of anchors) {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const blockID = anchor.getAttribute('href');
+        
+        document.querySelector('' + blockID).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
-      }    
-    //закрыть мод.окно
-    close.addEventListener('click', () => {
-      overlay.style.display = 'none';
-      more.classList.remove('more-splash');
-      document.body.style.overflow = '';
-  });
+      });
+    }
+  }
+  myScroll();
 
   // Form
   // объект выводимых сообщений
@@ -269,68 +283,23 @@ window.addEventListener('DOMContentLoaded', function() {
       totalValue = document.getElementById('total'),
       personsSum = 0,
       daysSum = 0,
-      total = 0,
-      koef = place.options[place.selectedIndex].value,
-      mistake = [/^\d{1}$/ , /^\d{2}$/, /^\d{3}$/];
+      total = 0;
 
-      totalValue.innerHTML = 0;
-
-      persons.addEventListener('input', function() {
-
-        if (mistake[0].test(this.value) || mistake[1].test(this.value) || mistake[2].test(this.value)) {          
-          this.value = this.value;
-        } else {
-          this.value = this.value.slice(0, -1);
+      document.body.addEventListener('input', (e) => {
+        let target = e.target;
+        if (target.classList == 'counter-block-input') {
+          target.value = target.value.replace(/(^[0]{1})/, "");
         }
+        personsSum = +persons.value;
+        daysSum = +restDays.value;
+        total = personsSum * daysSum * 4000;
 
-        personsSum = +this.value;
-
-        if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
-          total = 0;
-        } else {
-          total = koef*daysSum*personsSum*4000;
-        }        
-
-        if (restDays.value == '') {
+        if (personsSum == "" || daysSum == "") {
           totalValue.innerHTML = 0;
         } else {
-          totalValue.innerHTML = total;
+          totalValue.innerHTML = total * place.options[place.selectedIndex].value;
         }
 
-      });
-
-      restDays.addEventListener('input', function() {
-
-        if (mistake[0].test(this.value) || mistake[1].test(this.value)) {          
-          this.value = this.value;
-        } else {
-          this.value = this.value.slice(0, -1);
-        }
-
-          daysSum = +this.value;
-
-          if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
-            total = 0;
-          } else {
-            total = koef*daysSum*personsSum*4000;
-          }  
-
-        if (persons.value == '') {
-          totalValue.innerHTML = 0;
-        } else {
-          totalValue.innerHTML = total;
-        }
-
-      });
-
-      place.addEventListener('change', function() {
-        if (restDays.value == '' || persons.value == '' || restDays.value == "0" || persons.value == "0") {
-          totalValue.innerHTML = 0;
-        } else {
-          // let  a = total;
-          koef = this.options[this.selectedIndex].value;
-          totalValue.innerHTML = koef*daysSum*personsSum*4000;
-        }
       });
 
 });

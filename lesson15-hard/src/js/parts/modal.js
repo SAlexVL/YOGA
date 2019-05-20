@@ -1,28 +1,25 @@
 function modal() {
-  let more = document.querySelector('.more'), 
-      overlay = document.querySelector('.overlay'),
-      close = document.querySelector('.popup-close'),
-      tabs = document.querySelectorAll('.description-btn');
+  let overlay = document.querySelector('.overlay'),
+  isActiveBtn;
 
-  let windowShow = () => {
-      overlay.style.display = 'block';
-      overlay.classList.add('more-splash');
-      document.body.style.overflow = 'hidden';
+  let bindModal = (overlayStatus, overflowStatus, classListMethod, el) => {
+    if(classListMethod == 'add') {isActiveBtn = el;}
+    if(!el) {el = isActiveBtn;}
+    overlay.style.display = overlayStatus;
+    el.classList[classListMethod]('more-splash');
+    document.body.style.overflow = overflowStatus;
   };
 
-  //Узнать больше под таймером
-  more.addEventListener('click', windowShow);
-  
-  //Узнать подробнее в табах
-  for (let i = 0; i < tabs.length; i++) {
-    tabs[i].addEventListener('click', windowShow);
-  }    
-  
-  //закрыть мод.окно
-  close.addEventListener('click', () => {
-    overlay.style.display = 'none';
-    more.classList.remove('more-splash');
-    document.body.style.overflow = '';
+  document.body.addEventListener('click', (e) => {
+    let target = e.target;
+
+    if (target.classList.contains('more') || target.classList.contains('description-btn')) {
+      bindModal('block', 'hidden', 'add', target);
+    }
+
+    if (target.classList.contains('popup-close')) {
+      bindModal('none', '', 'remove');
+    }
   });
 }
 
