@@ -211,7 +211,7 @@ window.addEventListener('DOMContentLoaded', function() {
                   if (param.value.match(phonnumb)) {
                     return request.send(json);
                   } else {
-                      return param.value = '';
+                      return (param.value = '');
                     }
     
                   };
