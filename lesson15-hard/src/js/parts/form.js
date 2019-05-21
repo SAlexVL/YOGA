@@ -38,13 +38,15 @@ function form() {
           let json = JSON.stringify(obj);
           // валидация номера телефона
           let phoneNumber = (param) => {
-            let phonnumb = /^[\+]\d{1}\s[\(]\d{3}[\)]\s\d{3}[\s]\d{2}[\s]\d{2}$/;  
-              if (param.value.match(phonnumb)) {
-                return request.send(json);
-              } else {
-                  return alert("Введите номер телефона правильно! Он должен выглядеть так: +7 (XXX) XXX XX XX");
-                }  
-          };
+            let phonnumb = /^[\+]\d{11}$/;
+  
+                if (param.value.match(phonnumb)) {
+                  return request.send(json);
+                } else {
+                    return param.value = '';
+                  }
+  
+                };
           phoneNumber(elemC);
 
           // текст в классе

@@ -179,32 +179,45 @@ window.addEventListener('DOMContentLoaded', function() {
               obj[key] = value;
             });
             let json = JSON.stringify(obj);
-            // валидация номера телефона
-            let phoneNumber = (param) => {
-              let phonnumb = /^[\+]\d{1}\s[\(]\d{3}[\)]\s\d{3}[\s]\d{2}[\s]\d{2}$/;
-    
-                  if (param.value.match(phonnumb)) {
-                    return request.send(json);
-                  } else {
-                      return alert("Введите номер телефона правильно! Он должен выглядеть так: +7 (XXX) XXX XX XX");
-                    }
-    
-                  };
-            phoneNumber(elemC);
+            
+
+            // body.addEventListener('input', e => {
+            //   let target = e.target;
+            //     if(target.matches(input[type$='tel'])) {
+            //       target.value = '+' +target.value.replace(/[^\d]/g, '').slice(0, 11);            
+            //     }
+            // });
+
+
+              // request.send(json); 
+           
 
             // текст в классе
             request.addEventListener('readystatechange', () => {
               if (request.readyState < 4) {
-               resolve(); // statusMessage.innerHTML = message.loading;
+               resolve(); // loading;
               } else if (request.readyState === 4 && request.status == 200) {
-                resolve();// statusMessage.innerHTML = message.success;
+                resolve();// success;
               } else {
-                reject();// statusMessage.innerHTML = message.failure;
+                reject();// failure;
               }
-            });
+            })
 
+            // валидация номера телефона
+
+            let phoneNumber = (param) => {
+              let phonnumb = /^[\+]\d{11}$/;
+    
+                  if (param.value.match(phonnumb)) {
+                    return request.send(json);
+                  } else {
+                      return param.value = '';
+                    }
+    
+                  };
+            phoneNumber(elemC);
           });
-        } 
+        }; 
     
             // обнуление input'ов
             let clearInput = () => {
@@ -217,11 +230,12 @@ window.addEventListener('DOMContentLoaded', function() {
               .then(() => statusMessage.innerHTML = message.loading)
               .then(() => statusMessage.innerHTML = message.success)
               .catch(() => statusMessage.innerHTML = message.failure)
-              .then(clearInput)
+              .then(clearInput);
 
        }); //sumbit
 
   };//sendForm
+
   for (let k = 0; k < argum.length; k++) {
     sendForm(argum[k], argumC[k]);
   }  
