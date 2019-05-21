@@ -34,8 +34,6 @@ function form() {
           let request = new XMLHttpRequest();
           request.open('POST', 'server.php');
           request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-
-          let formData = new FormData(elemF);
   
           let obj = {};
           formData.forEach(function(value, key) {

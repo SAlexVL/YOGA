@@ -1639,7 +1639,6 @@ function form() {
           var request = new XMLHttpRequest();
           request.open('POST', 'server.php');
           request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-          var formData = new FormData(elemF);
           var obj = {};
           formData.forEach(function (value, key) {
             obj[key] = value;
